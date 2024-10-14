@@ -1,8 +1,45 @@
 import clsx from 'clsx'
-import { Button } from './components/ui/button'
+import { codeListAtom, fontSizeAtom } from './lib/store'
+import { useAtom } from 'jotai'
+import { marketIsOpen } from './lib/utils'
+import { getHTTPService, Stock } from './httpService'
+import { useInterval } from './lib/hooks'
+import { StockItem } from './components/StockItem'
 
-const fontSize = 'sm'
+const { getHkValue, getShValue, getSzValue } = getHTTPService()
 function App() {
+	const [stockList, setStockList] = useState<Stock[]>([])
+	const [codeList, setCodeList] = useAtom(codeListAtom)
+	const [fontSize] = useAtom(fontSizeAtom)
+
+	const fetchStock = useCallback(async () => {
+		const shCodes = codeList.filter((c) => c.type === 'sh').map((c) => c.code)
+		const szCodes = codeList.filter((c) => c.type === 'sz').map((c) => c.code)
+		const hkCodes = codeList.filter((c) => c.type === 'hk').map((c) => c.code)
+		const [sh, sz, hk] = await Promise.all([
+			getShValue(shCodes),
+			getSzValue(szCodes),
+			getHkValue(hkCodes),
+		])
+		const orderedStocks = codeList
+			.map(({ type, code }) => {
+				const stockList = type === 'sh' ? sh : type === 'sz' ? sz : hk
+				return stockList.find((stock) => stock.code === code)
+			})
+			.filter(Boolean) as Stock[]
+		setStockList(orderedStocks)
+	}, [codeList])
+
+	useEffect(() => {
+		fetchStock()
+	}, [fetchStock])
+
+	useInterval(() => {
+		if (!marketIsOpen()) return
+
+		fetchStock()
+	}, 3000)
+
 	return (
 		<footer
 			className={clsx(
@@ -10,8 +47,9 @@ function App() {
 				`text-${fontSize}`
 			)}
 		>
-			<h1 className='text-2xl font-bold text-red-500'>WXT + React</h1>
-			<Button>Click me</Button>
+			{stockList.map((stock, index) => (
+				<StockItem key={index} stock={stock} type={stock.type} />
+			))}
 		</footer>
 	)
 }

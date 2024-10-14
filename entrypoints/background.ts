@@ -1,3 +1,5 @@
+import { registerHTTPService } from './httpService'
+
 export default defineBackground(() => {
-  console.log('Hello background!', { id: browser.runtime.id });
-});
+	registerHTTPService()
+})
