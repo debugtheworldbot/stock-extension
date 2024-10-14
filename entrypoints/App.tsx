@@ -5,6 +5,7 @@ import { marketIsOpen } from './lib/utils'
 import { getHTTPService, Stock } from './httpService'
 import { useInterval } from './lib/hooks'
 import { StockItem } from './components/StockItem'
+import Settings from './components/Settings'
 
 const { getHkValue, getShValue, getSzValue } = getHTTPService()
 function App() {
