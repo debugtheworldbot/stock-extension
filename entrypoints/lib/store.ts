@@ -9,6 +9,13 @@ export const defaultCodeList: { type: Market; code: string }[] = [
 	{ type: 'sh', code: '510300' },
 	{ type: 'hk', code: '00700' },
 ]
+
+export const getCodeList = async () => {
+	const codeList = await storage.getItem<{ type: Market; code: string }[]>(
+		'local:codeList'
+	)
+	return codeList || defaultCodeList
+}
 export const codeListAtom =
 	atom<{ type: Market; code: string }[]>(defaultCodeList)
 

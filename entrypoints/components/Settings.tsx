@@ -1,4 +1,10 @@
-import { codeListAtom, fontSizeAtom, showNameAtom } from '../lib/store'
+import {
+	codeListAtom,
+	defaultCodeList,
+	fontSizeAtom,
+	getCodeList,
+	showNameAtom,
+} from '../lib/store'
 import { CodeIcon, PlusCircledIcon, TextIcon } from '@radix-ui/react-icons'
 import { useAtom } from 'jotai'
 import React, { useState } from 'react'
@@ -13,10 +19,14 @@ import {
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { getHTTPService, Market, Stock } from '../httpService'
+import { useStorageState } from '../lib/hooks'
 
 const { getHkValue, getShValue, getSzValue } = getHTTPService()
 export default function Settings() {
-	const [codeList, setCodeList] = useAtom(codeListAtom)
+	const [codeList, setCodeList] = useStorageState<
+		{ type: Market; code: string }[]
+	>('codeList', defaultCodeList)
+
 	const [pendingStock, setPendingStock] = useState<{
 		sh: Stock | null
 		sz: Stock | null
@@ -70,6 +80,11 @@ export default function Settings() {
 
 	return (
 		<main className='flex flex-col gap-4 min-w-[350px]'>
+			{codeList.map((c) => (
+				<div key={c.code}>
+					{c.type} {c.code}
+				</div>
+			))}
 			<h1 className='text-xl font-bold'>添加股票</h1>
 			<form onSubmit={handleSubmit} className='flex gap-2 flex-shrink-0'>
 				<Input
