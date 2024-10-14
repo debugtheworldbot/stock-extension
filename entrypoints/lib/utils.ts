@@ -10,3 +10,27 @@ export function marketIsOpen() {
 	const beijingHour = hour + 8
 	return beijingHour >= 9 && beijingHour <= 17
 }
+
+export async function readStream(stream: ReadableStream) {
+	const reader = stream.getReader()
+	const decoder = new TextDecoder('gbk') // 使用 UTF-8 解码器
+
+	let result = ''
+	let done = false
+
+	while (!done) {
+		// 读取流中的字节块
+		const { value, done: readerDone } = await reader.read()
+		done = readerDone
+
+		// 如果读取到了数据块，使用 decoder 将其转换为字符串
+		if (value) {
+			result += decoder.decode(value, { stream: true })
+		}
+	}
+
+	// 完成所有块的读取后，调用 `decoder.decode()` 结束流
+	result += decoder.decode()
+
+	return result
+}

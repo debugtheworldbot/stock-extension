@@ -1,4 +1,5 @@
 import { defineProxyService } from '@webext-core/proxy-service'
+import { readStream } from './lib/utils'
 
 // 1. Define your service
 class HTTPService {
@@ -9,7 +10,8 @@ class HTTPService {
 			`https://push2.eastmoney.com/api/qt/ulist.np/get?fields=f1,f14,f2,f12,f5,f18,f4&secids=${idListStr}`,
 			{ method: 'GET' }
 		)
-		const stocks = (await response.json()).data.data?.diff as StockValue[]
+		const data = await response.json()
+		const stocks = data.data?.diff as StockValue[]
 		return (
 			stocks?.map((stock: StockValue) => ({
 				type: 'sh',
@@ -27,7 +29,8 @@ class HTTPService {
 			`https://push2.eastmoney.com/api/qt/ulist.np/get?fields=f1,f14,f2,f12,f5,f18,f4&secids=${idListStr}`,
 			{ method: 'GET' }
 		)
-		const stocks = (await response.json()).data.data?.diff as StockValue[]
+		const data = await response.json()
+		const stocks = data.data?.diff as StockValue[]
 		return (
 			stocks?.map((stock: StockValue) => ({
 				type: 'sz',
@@ -53,7 +56,8 @@ class HTTPService {
 		const response = await fetch(`https://qt.gtimg.cn/q=${idListStr}`, {
 			method: 'GET',
 		})
-		const stocks = convertToStockArray(await response.text())
+		const res = await readStream(response.body!)
+		const stocks = convertToStockArray(res)
 		return (
 			stocks?.map((stock: Stock) => ({
 				type: 'hk',
