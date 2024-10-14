@@ -1,27 +1,18 @@
-import { useState } from 'react'
+import clsx from 'clsx'
+import { Button } from './components/ui/button'
 
+const fontSize = 'sm'
 function App() {
-	const [count, setCount] = useState(0)
-
 	return (
-		<>
-			<div>
-				<a href='https://wxt.dev' target='_blank'></a>
-				<a href='https://react.dev' target='_blank'></a>
-			</div>
+		<footer
+			className={clsx(
+				`transition-all fixed bottom-0 bg-white/80 backdrop-blur flex w-screen pl-6 pb-2 items-center gap-2 overflow-visible flex-wrap`,
+				`text-${fontSize}`
+			)}
+		>
 			<h1 className='text-2xl font-bold text-red-500'>WXT + React</h1>
-			<div className='card'>
-				<button onClick={() => setCount((count) => count + 1)}>
-					count is {count}
-				</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
-			</div>
-			<p className='read-the-docs'>
-				Click on the WXT and React logos to learn more
-			</p>
-		</>
+			<Button>Click me</Button>
+		</footer>
 	)
 }
 
