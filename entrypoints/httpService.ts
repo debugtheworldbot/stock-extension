@@ -51,13 +51,17 @@ class HTTPService {
 
 	async getHkValue(stockCodeList: string[]): Promise<Stock[]> {
 		if (stockCodeList.length === 0) return []
-		const idListStr = stockCodeList.map((code) => `s_hk${code}`).join(',')
 
-		const response = await fetch(`https://qt.gtimg.cn/q=${idListStr}`, {
+		const idListStr = stockCodeList.map((code) => `rt_hk${code}`).join(',')
+
+		const res = await fetch(`https://hq.sinajs.cn/list=${idListStr}`, {
 			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
 		})
-		const res = await readStream(response.body!)
-		const stocks = convertToStockArray(res)
+		const data = await readStream(res.body!)
+		const stocks = convertToStockArray(data)
 		return (
 			stocks?.map((stock: Stock) => ({
 				type: 'hk',
@@ -82,10 +86,12 @@ const convertToStockArray = (rawData: string): Stock[] => {
 		.split(';')
 		.filter(Boolean)
 		.map((stockData) => {
-			const [, stockInfo] = stockData.split('=')
-			const [, name, code, current, , percent] = stockInfo
+			const [c, stockInfo] = stockData.split('=')
+			// c= var hq_str_rt_hk01810
+			const code = c.replace('var hq_str_rt_hk', '')
+			const [, name, , , , , current, , percent] = stockInfo
 				.replace(/"/g, '')
-				.split('~')
+				.split(',')
 			return {
 				code,
 				name,
