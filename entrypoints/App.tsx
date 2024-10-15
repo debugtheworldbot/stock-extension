@@ -1,16 +1,18 @@
 import clsx from 'clsx'
-import { codeListAtom, fontSizeAtom } from './lib/store'
 import { useAtom } from 'jotai'
 import { marketIsOpen } from './lib/utils'
 import { getHTTPService, Stock } from './httpService'
-import { useInterval } from './lib/hooks'
+import { useInterval, useStorageState } from './lib/hooks'
 import { StockItem } from './components/StockItem'
+import { CodeList, defaultCodeList } from './lib/store'
 
 const { getHkValue, getShValue, getSzValue } = getHTTPService()
 function App() {
 	const [stockList, setStockList] = useState<Stock[]>([])
-	const [codeList, setCodeList] = useAtom(codeListAtom)
-	const [fontSize] = useAtom(fontSizeAtom)
+
+	const [codeList] = useStorageState('codeList', defaultCodeList)
+
+	const [fontSize] = useStorageState('fontSize', 'base')
 
 	const fetchStock = useCallback(async () => {
 		const shCodes = codeList.filter((c) => c.type === 'sh').map((c) => c.code)

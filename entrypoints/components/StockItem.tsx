@@ -1,11 +1,12 @@
 import { useAtom } from 'jotai'
-import { codeListAtom, showNameAtom } from '../lib/store'
-import { Stock, Market } from '../lib/api'
 import { DrawingPinIcon, TrashIcon } from '@radix-ui/react-icons'
+import { useStorageState } from '../lib/hooks'
+import { defaultCodeList } from '../lib/store'
+import { Market, Stock } from '../httpService'
 
 export const StockItem = ({ stock, type }: { stock: Stock; type: Market }) => {
-	const [, setCodeList] = useAtom(codeListAtom)
-	const [showName, setShowName] = useAtom(showNameAtom)
+	const [, setCodeList] = useStorageState('codeList', defaultCodeList)
+	const [showName, setShowName] = useStorageState('showName', true)
 	return (
 		<div
 			className='relative group bg-transparent px-2 py-1 rounded transition-all flex-shrink-0'

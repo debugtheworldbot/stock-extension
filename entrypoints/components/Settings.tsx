@@ -1,10 +1,4 @@
-import {
-	codeListAtom,
-	defaultCodeList,
-	fontSizeAtom,
-	getCodeList,
-	showNameAtom,
-} from '../lib/store'
+import { CodeList, defaultCodeList } from '../lib/store'
 import { CodeIcon, PlusCircledIcon, TextIcon } from '@radix-ui/react-icons'
 import { useAtom } from 'jotai'
 import React, { useState } from 'react'
@@ -23,9 +17,10 @@ import { useStorageState } from '../lib/hooks'
 
 const { getHkValue, getShValue, getSzValue } = getHTTPService()
 export default function Settings() {
-	const [codeList, setCodeList] = useStorageState<
-		{ type: Market; code: string }[]
-	>('codeList', defaultCodeList)
+	const [codeList, setCodeList] = useStorageState<CodeList>(
+		'codeList',
+		defaultCodeList
+	)
 
 	const [pendingStock, setPendingStock] = useState<{
 		sh: Stock | null
@@ -144,7 +139,7 @@ export default function Settings() {
 
 			<h1 className='text-xl font-bold'>设置</h1>
 			<div className='flex gap-2 items-center'>
-				<NameSwitch />
+				{/* <NameSwitch /> */}
 				<FontSizeSelect />
 				<HelpDialog />
 				<a
@@ -160,7 +155,7 @@ export default function Settings() {
 }
 
 const FontSizeSelect = () => {
-	const [fontSize, setFontSize] = useAtom(fontSizeAtom)
+	const [fontSize, setFontSize] = useStorageState('fontSize', 'base')
 	return (
 		<Select
 			value={fontSize}
@@ -181,16 +176,16 @@ const FontSizeSelect = () => {
 	)
 }
 
-const NameSwitch = () => {
-	const [showName, setShowName] = useAtom(showNameAtom)
-	return (
-		<Button
-			variant='outline'
-			className='flex items-center gap-1'
-			onClick={() => setShowName(!showName)}
-		>
-			{showName ? <CodeIcon /> : <TextIcon />}
-			显示股票{showName ? '代码' : '名称'}
-		</Button>
-	)
-}
+// const NameSwitch = () => {
+// 	const [showName, setShowName] = useAtom(showNameAtom)
+// 	return (
+// 		<Button
+// 			variant='outline'
+// 			className='flex items-center gap-1'
+// 			onClick={() => setShowName(!showName)}
+// 		>
+// 			{showName ? <CodeIcon /> : <TextIcon />}
+// 			显示股票{showName ? '代码' : '名称'}
+// 		</Button>
+// 	)
+// }

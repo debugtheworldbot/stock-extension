@@ -42,10 +42,15 @@ export const useStorageState = <T>(
 		}
 		init()
 	}, [key])
+	storage.watch<T>(`local:${key}`, (newValue) => {
+		if (newValue !== state && !!newValue) {
+			setState(newValue)
+		}
+	})
 
 	const setValue: React.Dispatch<React.SetStateAction<T>> = (value) => {
-		storage.setItem(`local:${key}`, value)
 		setState(value)
+		storage.setItem(`local:${key}`, value)
 	}
 
 	return [state, setValue]
