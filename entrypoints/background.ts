@@ -19,7 +19,7 @@ export default defineBackground(() => {
 					],
 				},
 				condition: {
-					urlFilter: 'https://*',
+					urlFilter: 'https://hq.sinajs.cn/*',
 					resourceTypes: [
 						'main_frame',
 						'sub_frame',
