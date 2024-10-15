@@ -54,23 +54,28 @@ class HTTPService {
 
 		const idListStr = stockCodeList.map((code) => `rt_hk${code}`).join(',')
 
-		const res = await fetch(`https://hq.sinajs.cn/list=${idListStr}`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		})
-		const data = await readStream(res.body!)
-		const stocks = convertToStockArray(data)
-		return (
-			stocks?.map((stock: Stock) => ({
-				type: 'hk',
-				name: stock.name,
-				code: stock.code,
-				current: parseFloat(stock.current).toFixed(2),
-				percent: stock.percent,
-			})) || []
-		)
+		try {
+			const res = await fetch(`https://hq.sinajs.cn/list=${idListStr}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+			const data = await readStream(res.body!)
+			const stocks = convertToStockArray(data)
+			return (
+				stocks?.map((stock: Stock) => ({
+					type: 'hk',
+					name: stock.name,
+					code: stock.code,
+					current: parseFloat(stock.current).toFixed(2),
+					percent: stock.percent,
+				})) || []
+			)
+		} catch (error) {
+			console.error(error)
+			return []
+		}
 	}
 }
 export const [registerHTTPService, getHTTPService] = defineProxyService(
@@ -90,7 +95,6 @@ const convertToStockArray = (rawData: string): Stock[] => {
 		.filter(Boolean)
 		.map((s) => s.trim())
 		.map((stockData) => {
-			console.log(stockData)
 			const [c, stockInfo] = stockData.split('=')
 			// c= var hq_str_rt_hk01810
 			const code = c.replace('var hq_str_rt_hk', '')

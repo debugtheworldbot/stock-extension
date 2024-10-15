@@ -19,3 +19,8 @@ export const getFontSize = async () => {
 	const fontSize = await storage.getItem<string>('local:fontSize')
 	return fontSize || 'base'
 }
+
+export const getShowUrlList = async () => {
+	const showUrlList = await storage.getItem<string[]>('local:showUrlList')
+	return showUrlList || []
+}

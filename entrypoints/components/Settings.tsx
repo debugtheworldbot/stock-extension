@@ -23,6 +23,10 @@ export default function Settings() {
 		'codeList',
 		defaultCodeList
 	)
+	const [showUrlList, setShowUrlList] = useStorageState<string[]>(
+		'showUrlList',
+		[]
+	)
 
 	const [currentUrl, setCurrentUrl] = useState('')
 
@@ -84,7 +88,17 @@ export default function Settings() {
 	return (
 		<main className='flex flex-col gap-4 min-w-[350px]'>
 			<div className='flex items-center space-x-2'>
-				<Switch id='airplane-mode' />
+				<Switch
+					onCheckedChange={(checked) => {
+						if (checked) {
+							setShowUrlList([...showUrlList, currentUrl])
+						} else {
+							setShowUrlList(showUrlList.filter((url) => url !== currentUrl))
+						}
+					}}
+					checked={showUrlList.includes(currentUrl)}
+					id='airplane-mode'
+				/>
 				<label htmlFor='airplane-mode' className='text-base cursor-pointer'>
 					在此网页
 					<span className='bg-gray-200 rounded px-1'>{currentUrl}</span>

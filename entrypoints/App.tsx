@@ -8,12 +8,16 @@ import { defaultCodeList } from './lib/store'
 const { getHkValue, getShValue, getSzValue } = getHTTPService()
 function App() {
 	const [stockList, setStockList] = useState<Stock[]>([])
+	const [showUrlList] = useStorageState<string[]>('showUrlList', [])
+	const currentHost = window.location.hostname
+	const isShow = showUrlList.includes(currentHost)
 
 	const [codeList] = useStorageState('codeList', defaultCodeList)
 
 	const [fontSize] = useStorageState('fontSize', 'base')
 
 	const fetchStock = useCallback(async () => {
+		if (!isShow) return
 		const shCodes = codeList.filter((c) => c.type === 'sh').map((c) => c.code)
 		const szCodes = codeList.filter((c) => c.type === 'sz').map((c) => c.code)
 		const hkCodes = codeList.filter((c) => c.type === 'hk').map((c) => c.code)
@@ -29,7 +33,7 @@ function App() {
 			})
 			.filter(Boolean) as Stock[]
 		setStockList(orderedStocks)
-	}, [codeList])
+	}, [codeList, isShow])
 
 	useEffect(() => {
 		fetchStock()
@@ -41,10 +45,12 @@ function App() {
 		fetchStock()
 	}, 3000)
 
+	if (!isShow) return null
+
 	return (
 		<footer
 			className={clsx(
-				`transition-all fixed bottom-0 bg-white/80 backdrop-blur flex w-screen pl-6 pb-2 items-center gap-2 overflow-visible flex-wrap`,
+				`transition-all fixed z-[9999] bottom-0 bg-white/80 backdrop-blur flex w-screen pl-6 pb-2 items-center gap-2 overflow-visible flex-wrap`,
 				`text-${fontSize}`
 			)}
 		>
