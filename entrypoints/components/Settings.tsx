@@ -86,8 +86,8 @@ export default function Settings() {
 	}
 
 	return (
-		<main className='flex flex-col gap-4 min-w-[350px]'>
-			<div className='flex items-center space-x-2'>
+		<main className='flex flex-col gap-4 min-w-[350px] text-base'>
+			<div className='flex items-center space-x-2 hover:underline'>
 				<Switch
 					onCheckedChange={(checked) => {
 						if (checked) {

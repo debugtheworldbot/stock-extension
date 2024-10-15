@@ -1,6 +1,12 @@
 import { registerHTTPService } from './httpService'
 
 export default defineBackground(() => {
+	browser.runtime.onMessage.addListener((message, sender) => {
+		if (message.action === 'openPopup') {
+			console.log('open popup')
+			browser.action.openPopup()
+		}
+	})
 	registerHTTPService()
 	browser.declarativeNetRequest.updateDynamicRules({
 		removeRuleIds: [1],

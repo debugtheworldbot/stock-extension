@@ -3,7 +3,7 @@ import Settings from '../components/Settings'
 
 function App() {
 	return (
-		<div className='p-4 py-6'>
+		<div className='px-4 py-8'>
 			<Settings />
 		</div>
 	)

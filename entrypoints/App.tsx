@@ -4,6 +4,8 @@ import { getHTTPService, Stock } from './httpService'
 import { useInterval, useStorageState } from './lib/hooks'
 import { StockItem } from './components/StockItem'
 import { defaultCodeList } from './lib/store'
+import { PlusIcon } from '@radix-ui/react-icons'
+import { Button } from './components/ui/button'
 
 const { getHkValue, getShValue, getSzValue } = getHTTPService()
 function App() {
@@ -57,6 +59,19 @@ function App() {
 			{stockList.map((stock, index) => (
 				<StockItem key={index} stock={stock} type={stock.type} />
 			))}
+			<Button
+				variant='ghost'
+				onClick={async () => {
+					const res = await browser.runtime.sendMessage({
+						action: 'openPopup',
+						type: 'add',
+						timestamp: 1,
+					})
+				}}
+				size='icon'
+			>
+				<PlusIcon className='w-4 h-4' />
+			</Button>
 		</footer>
 	)
 }
