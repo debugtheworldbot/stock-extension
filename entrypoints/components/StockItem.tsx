@@ -1,4 +1,3 @@
-import { useAtom } from 'jotai'
 import { DrawingPinIcon, TrashIcon } from '@radix-ui/react-icons'
 import { useStorageState } from '../lib/hooks'
 import { defaultCodeList } from '../lib/store'
@@ -6,10 +5,9 @@ import { Market, Stock } from '../httpService'
 
 export const StockItem = ({ stock, type }: { stock: Stock; type: Market }) => {
 	const [, setCodeList] = useStorageState('codeList', defaultCodeList)
-	const [showName, setShowName] = useStorageState('showName', true)
 	return (
 		<div
-			className='relative group bg-transparent px-2 py-1 rounded transition-all flex-shrink-0'
+			className='relative group bg-transparent px-2 py-1 rounded transition-all flex-shrink-0 items-center'
 			key={stock.name}
 		>
 			<div className='opacity-0 group-hover:opacity-100 transition-all absolute -top-2 right-0 flex gap-1'>
@@ -40,9 +38,7 @@ export const StockItem = ({ stock, type }: { stock: Stock; type: Market }) => {
 					<TrashIcon className='w-[1em] h-[1em]' />
 				</button>
 			</div>
-			<span className='cursor-pointer' onClick={() => setShowName(!showName)}>
-				{showName ? stock.name : stock.code}
-			</span>
+			<span className='font-mono'>{stock.name}</span>
 			<span className='font-mono'> {stock.current}</span>
 			<span>{stock.percent >= 0 ? '△' : '▽'}</span>
 			<span className='font-mono'>{stock.percent.toFixed(2)}%</span>

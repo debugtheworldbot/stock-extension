@@ -1,10 +1,9 @@
 import clsx from 'clsx'
-import { useAtom } from 'jotai'
 import { marketIsOpen } from './lib/utils'
 import { getHTTPService, Stock } from './httpService'
 import { useInterval, useStorageState } from './lib/hooks'
 import { StockItem } from './components/StockItem'
-import { CodeList, defaultCodeList } from './lib/store'
+import { defaultCodeList } from './lib/store'
 
 const { getHkValue, getShValue, getSzValue } = getHTTPService()
 function App() {
