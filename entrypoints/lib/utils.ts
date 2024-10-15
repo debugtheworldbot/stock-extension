@@ -34,3 +34,16 @@ export async function readStream(stream: ReadableStream) {
 
 	return result
 }
+
+export async function getCurrentUrl(): Promise<string> {
+	return new Promise((resolve) => {
+		browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
+			// 获取当前标签页的URL
+			let currentTab = tabs[0]
+			let url = currentTab.url ? new URL(currentTab.url).hostname : ''
+			console.log(url)
+
+			resolve(url || '')
+		})
+	})
+}

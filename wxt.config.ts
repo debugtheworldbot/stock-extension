@@ -3,7 +3,7 @@ import { defineConfig } from 'wxt'
 // See https://wxt.dev/api/config.html
 export default defineConfig({
 	manifest: {
-		permissions: ['storage', 'declarativeNetRequest'],
+		permissions: ['storage', 'declarativeNetRequest', 'tabs'],
 	},
 	modules: ['@wxt-dev/module-react'],
 })

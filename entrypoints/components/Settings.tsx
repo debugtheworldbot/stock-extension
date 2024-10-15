@@ -14,6 +14,8 @@ import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { getHTTPService, Market, Stock } from '../httpService'
 import { useStorageState } from '../lib/hooks'
+import { Switch } from './ui/switch'
+import { getCurrentUrl } from '../lib/utils'
 
 const { getHkValue, getShValue, getSzValue } = getHTTPService()
 export default function Settings() {
@@ -21,6 +23,12 @@ export default function Settings() {
 		'codeList',
 		defaultCodeList
 	)
+
+	const [currentUrl, setCurrentUrl] = useState('')
+
+	useEffect(() => {
+		getCurrentUrl().then((url) => setCurrentUrl(url))
+	}, [])
 
 	const [pendingStock, setPendingStock] = useState<{
 		sh: Stock | null
@@ -75,11 +83,14 @@ export default function Settings() {
 
 	return (
 		<main className='flex flex-col gap-4 min-w-[350px]'>
-			{codeList.map((c) => (
-				<div key={c.code}>
-					{c.type} {c.code}
-				</div>
-			))}
+			<div className='flex items-center space-x-2'>
+				<Switch id='airplane-mode' />
+				<label htmlFor='airplane-mode' className='text-base cursor-pointer'>
+					在此网页
+					<span className='bg-gray-200 rounded px-1'>{currentUrl}</span>
+					下方展示股票信息
+				</label>
+			</div>
 			<h1 className='text-xl font-bold'>添加股票</h1>
 			<form onSubmit={handleSubmit} className='flex gap-2 flex-shrink-0'>
 				<Input
