@@ -4,7 +4,7 @@ import { defaultCodeList } from '../lib/store'
 import { Market, Stock } from '../httpService'
 
 export const StockItem = ({ stock, type }: { stock: Stock; type: Market }) => {
-	const [, setCodeList] = useStorageState('codeList', defaultCodeList)
+	const [codeList, setCodeList] = useStorageState('codeList', defaultCodeList)
 	return (
 		<div
 			className='relative group bg-transparent px-2 py-1 rounded transition-all flex-shrink-0 items-center'
@@ -13,15 +13,16 @@ export const StockItem = ({ stock, type }: { stock: Stock; type: Market }) => {
 			<div className='opacity-0 group-hover:opacity-100 transition-all absolute -top-2 right-0 flex gap-1'>
 				<button
 					onClick={() => {
-						setCodeList((c) => {
-							const index = c.findIndex(
-								(c) => c.type === type && c.code === stock.code
-							)
-							if (index === -1) return c
-							const newCodeList = [...c.slice(0, index), ...c.slice(index + 1)]
-							newCodeList.unshift({ type, code: stock.code })
-							return newCodeList
-						})
+						const index = codeList.findIndex(
+							(c) => c.type === type && c.code === stock.code
+						)
+						if (index === -1) return
+						const newCodeList = [
+							...codeList.slice(0, index),
+							...codeList.slice(index + 1),
+						]
+						newCodeList.unshift({ type, code: stock.code })
+						setCodeList(newCodeList)
 					}}
 					className='transition-all border p-0.5 rounded bg-white hover:bg-green-100'
 				>
@@ -29,8 +30,10 @@ export const StockItem = ({ stock, type }: { stock: Stock; type: Market }) => {
 				</button>
 				<button
 					onClick={() => {
-						setCodeList((c) =>
-							c.filter((c) => !(c.type === type && c.code === stock.code))
+						setCodeList(
+							codeList.filter(
+								(c) => !(c.type === type && c.code === stock.code)
+							)
 						)
 					}}
 					className='transition-all border p-0.5 rounded bg-white hover:bg-red-300'
