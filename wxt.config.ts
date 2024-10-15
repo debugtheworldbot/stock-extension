@@ -5,6 +5,7 @@ export default defineConfig({
 	manifest: {
 		permissions: ['storage', 'declarativeNetRequest', 'tabs', 'webRequest'],
 		host_permissions: ['*://hq.sinajs.cn/*'],
+		language: 'zh_CN',
 	},
 	modules: ['@wxt-dev/module-react'],
 })

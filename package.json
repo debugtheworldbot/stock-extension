@@ -9,7 +9,8 @@
 		"dev:firefox": "wxt -b firefox",
 		"build": "wxt build",
 		"build:firefox": "wxt build -b firefox",
-		"zip": "npm version patch && wxt zip",
+		"zip": "wxt zip",
+		"surge": "npm version patch && wxt zip",
 		"zip:firefox": "wxt zip -b firefox",
 		"compile": "tsc --noEmit",
 		"postinstall": "wxt prepare"
