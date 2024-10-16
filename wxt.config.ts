@@ -3,9 +3,13 @@ import { defineConfig } from 'wxt'
 // See https://wxt.dev/api/config.html
 export default defineConfig({
 	manifest: {
-		permissions: ['storage', 'declarativeNetRequest', 'tabs', 'webRequest'],
+		permissions: [
+			'storage',
+			'declarativeNetRequest',
+			'webRequest',
+			'activeTab',
+		],
 		host_permissions: ['*://hq.sinajs.cn/*'],
-		language: 'zh_CN',
 	},
 	modules: ['@wxt-dev/module-react'],
 })
