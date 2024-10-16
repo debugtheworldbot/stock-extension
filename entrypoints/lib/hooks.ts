@@ -27,10 +27,11 @@ export const useInterval = (
 	}, [delay])
 }
 
-export const useStorageState = <T>(
-	key: string,
+export const useStorageState = <T>(store: {
+	key: string
 	initialValue: T
-): [T, React.Dispatch<React.SetStateAction<T>>] => {
+}): [T, React.Dispatch<React.SetStateAction<T>>] => {
+	const { key, initialValue } = store
 	const [state, setState] = useState<T>(initialValue)
 
 	useEffect(() => {

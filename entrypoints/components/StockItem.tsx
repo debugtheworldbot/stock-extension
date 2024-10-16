@@ -1,10 +1,10 @@
 import { DrawingPinIcon, TrashIcon } from '@radix-ui/react-icons'
 import { useStorageState } from '../lib/hooks'
-import { defaultCodeList } from '../lib/store'
+import { codeListStore } from '../lib/store'
 import { Market, Stock } from '../httpService'
 
 export const StockItem = ({ stock, type }: { stock: Stock; type: Market }) => {
-	const [codeList, setCodeList] = useStorageState('codeList', defaultCodeList)
+	const [codeList, setCodeList] = useStorageState(codeListStore)
 	return (
 		<div
 			className='relative group bg-transparent px-2 py-1 rounded transition-all flex-shrink-0 items-center'

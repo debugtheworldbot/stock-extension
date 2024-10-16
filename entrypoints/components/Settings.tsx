@@ -1,6 +1,10 @@
-import { CodeList, defaultCodeList } from '../lib/store'
-import { CodeIcon, PlusCircledIcon, TextIcon } from '@radix-ui/react-icons'
-import { useAtom } from 'jotai'
+import {
+	codeListStore,
+	FontSize,
+	fontSizeStore,
+	showUrlListStore,
+} from '../lib/store'
+import { PlusCircledIcon } from '@radix-ui/react-icons'
 import React, { useState } from 'react'
 import HelpDialog from './HelpDialog'
 import {
@@ -19,14 +23,8 @@ import { getCurrentUrl } from '../lib/utils'
 
 const { getHkValue, getShValue, getSzValue } = getHTTPService()
 export default function Settings() {
-	const [codeList, setCodeList] = useStorageState<CodeList>(
-		'codeList',
-		defaultCodeList
-	)
-	const [showUrlList, setShowUrlList] = useStorageState<string[]>(
-		'showUrlList',
-		[]
-	)
+	const [codeList, setCodeList] = useStorageState(codeListStore)
+	const [showUrlList, setShowUrlList] = useStorageState(showUrlListStore)
 
 	const [currentUrl, setCurrentUrl] = useState('')
 
@@ -185,13 +183,11 @@ export default function Settings() {
 }
 
 const FontSizeSelect = () => {
-	const [fontSize, setFontSize] = useStorageState('fontSize', 'base')
+	const [fontSize, setFontSize] = useStorageState(fontSizeStore)
 	return (
 		<Select
 			value={fontSize}
-			onValueChange={(value) =>
-				setFontSize(value as 'xs' | 'sm' | 'base' | 'xl')
-			}
+			onValueChange={(value) => setFontSize(value as FontSize)}
 		>
 			<SelectTrigger className='w-fit'>
 				<SelectValue placeholder='字号' />

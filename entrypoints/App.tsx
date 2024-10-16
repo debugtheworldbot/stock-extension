@@ -3,7 +3,7 @@ import { marketIsOpen } from './lib/utils'
 import { getHTTPService, Stock } from './httpService'
 import { useInterval, useStorageState } from './lib/hooks'
 import { StockItem } from './components/StockItem'
-import { defaultCodeList } from './lib/store'
+import { codeListStore, fontSizeStore, showUrlListStore } from './lib/store'
 import { PlusIcon } from '@radix-ui/react-icons'
 import { Button } from './components/ui/button'
 import applyShortCutListener from './lib/shortCut'
@@ -11,16 +11,12 @@ import applyShortCutListener from './lib/shortCut'
 const { getHkValue, getShValue, getSzValue } = getHTTPService()
 function App() {
 	const [stockList, setStockList] = useState<Stock[]>([])
-	const [showUrlList, setShowUrlList] = useStorageState<string[]>(
-		'showUrlList',
-		[]
-	)
+	const [showUrlList, setShowUrlList] = useStorageState(showUrlListStore)
 	const currentHost = window.location.hostname
 	const isShow = showUrlList.includes(currentHost)
 
-	const [codeList] = useStorageState('codeList', defaultCodeList)
-
-	const [fontSize] = useStorageState('fontSize', 'base')
+	const [codeList] = useStorageState(codeListStore)
+	const [fontSize] = useStorageState(fontSizeStore)
 
 	const fetchStock = useCallback(async () => {
 		if (!isShow) return
