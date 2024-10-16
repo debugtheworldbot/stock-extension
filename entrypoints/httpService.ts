@@ -17,7 +17,10 @@ class HTTPService {
 				type: 'sh',
 				name: stock.f14,
 				code: stock.f12,
-				current: (stock.f2 / 100).toFixed(2),
+				current:
+					stock.f1 === 2
+						? (stock.f2 / 100).toFixed(2)
+						: (stock.f2 / 1000).toFixed(2),
 				percent: (stock.f4 * 100) / stock.f18,
 			})) || []
 		)
@@ -36,7 +39,10 @@ class HTTPService {
 				type: 'sz',
 				name: stock.f14,
 				code: stock.f12,
-				current: (stock.f2 / 100).toFixed(2),
+				current:
+					stock.f1 === 2
+						? (stock.f2 / 100).toFixed(2)
+						: (stock.f2 / 1000).toFixed(2),
 				percent: (stock.f4 * 100) / stock.f18,
 			})) || []
 		)
@@ -112,7 +118,7 @@ const convertToStockArray = (rawData: string): Stock[] => {
 }
 
 type StockValue = {
-	f1: number
+	f1: number // 类型 2股票 3指数 ?
 	f2: number // 现价
 	f4: number // 股票涨跌
 	f5: number // 成交量
