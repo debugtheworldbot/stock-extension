@@ -6,11 +6,15 @@ import { StockItem } from './components/StockItem'
 import { defaultCodeList } from './lib/store'
 import { PlusIcon } from '@radix-ui/react-icons'
 import { Button } from './components/ui/button'
+import applyShortCutListener from './lib/shortCut'
 
 const { getHkValue, getShValue, getSzValue } = getHTTPService()
 function App() {
 	const [stockList, setStockList] = useState<Stock[]>([])
-	const [showUrlList] = useStorageState<string[]>('showUrlList', [])
+	const [showUrlList, setShowUrlList] = useStorageState<string[]>(
+		'showUrlList',
+		[]
+	)
 	const currentHost = window.location.hostname
 	const isShow = showUrlList.includes(currentHost)
 
@@ -46,6 +50,19 @@ function App() {
 
 		fetchStock()
 	}, 3000)
+
+	useEffect(() => {
+		const unSub = applyShortCutListener(() => {
+			setShowUrlList(
+				isShow
+					? showUrlList.filter((s) => s !== window.location.hostname)
+					: [...showUrlList, window.location.hostname]
+			)
+		})
+		return () => {
+			unSub()
+		}
+	}, [showUrlList, isShow])
 
 	if (!isShow) return null
 

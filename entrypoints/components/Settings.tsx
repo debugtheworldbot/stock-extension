@@ -86,7 +86,7 @@ export default function Settings() {
 	}
 
 	return (
-		<main className='flex flex-col gap-4 min-w-[350px] text-base'>
+		<main className='flex flex-col gap-4 min-w-[380px] text-base'>
 			<div className='flex items-center space-x-2 hover:underline'>
 				<Switch
 					onCheckedChange={(checked) => {
@@ -101,10 +101,15 @@ export default function Settings() {
 				/>
 				<label htmlFor='airplane-mode' className='text-base cursor-pointer'>
 					在此网页
-					<span className='bg-gray-200 rounded px-1'>{currentUrl}</span>
+					<span className='bg-gray-200 rounded p-1 mx-1'>{currentUrl}</span>
 					下方展示股票信息
 				</label>
 			</div>
+			<p className='text-sm text-gray-500'>
+				也可以按快捷键
+				<span className='bg-gray-200 rounded p-1 mx-1'> Ctrl + g </span>
+				来快速切换是否在当前网页展示
+			</p>
 			<h1 className='text-xl font-bold'>添加股票</h1>
 			<form onSubmit={handleSubmit} className='flex gap-2 flex-shrink-0'>
 				<Input
