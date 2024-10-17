@@ -29,8 +29,13 @@ export default defineContentScript({
 			},
 		})
 
-		setTimeout(() => {
+		if (document.readyState === 'complete') {
 			ui.mount()
-		}, 500)
+		}
+		document.onreadystatechange = () => {
+			if (document.readyState === 'complete') {
+				ui.mount()
+			}
+		}
 	},
 })
