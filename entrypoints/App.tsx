@@ -41,11 +41,14 @@ function App() {
 		fetchStock()
 	}, [fetchStock])
 
-	useInterval(() => {
-		if (!marketIsOpen()) return
+	useInterval(
+		() => {
+			if (!marketIsOpen()) return
 
-		fetchStock()
-	}, 3000)
+			fetchStock()
+		},
+		isShow ? 3000 : null
+	)
 
 	useEffect(() => {
 		const unSub = applyShortCutListener(() => {

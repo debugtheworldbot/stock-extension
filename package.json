@@ -3,6 +3,7 @@
 	"description": "可以在任何网站底部加入自选股列表查看",
 	"private": true,
 	"version": "0.0.4",
+	"license": "MIT",
 	"type": "module",
 	"scripts": {
 		"dev": "wxt",
