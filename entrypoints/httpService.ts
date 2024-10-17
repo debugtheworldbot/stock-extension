@@ -6,46 +6,56 @@ class HTTPService {
 	async getShValue(stockCodeList: string[]): Promise<Stock[]> {
 		if (stockCodeList.length === 0) return []
 		const idListStr = stockCodeList.map((code) => `1.${code}`).join(',')
-		const response = await fetch(
-			`https://push2.eastmoney.com/api/qt/ulist.np/get?fields=f1,f14,f2,f12,f5,f18,f4&secids=${idListStr}`,
-			{ method: 'GET' }
-		)
-		const data = await response.json()
-		const stocks = data.data?.diff as StockValue[]
-		return (
-			stocks?.map((stock: StockValue) => ({
-				type: 'sh',
-				name: stock.f14,
-				code: stock.f12,
-				current:
-					stock.f1 === 2
-						? (stock.f2 / 100).toFixed(2)
-						: (stock.f2 / 1000).toFixed(2),
-				percent: (stock.f4 * 100) / stock.f18,
-			})) || []
-		)
+		try {
+			const response = await fetch(
+				`https://push2.eastmoney.com/api/qt/ulist.np/get?fields=f1,f14,f2,f12,f5,f18,f4&secids=${idListStr}`,
+				{ method: 'GET' }
+			)
+			const data = await response.json()
+			const stocks = data.data?.diff as StockValue[]
+			return (
+				stocks?.map((stock: StockValue) => ({
+					type: 'sh',
+					name: stock.f14,
+					code: stock.f12,
+					current:
+						stock.f1 === 2
+							? (stock.f2 / 100).toFixed(2)
+							: (stock.f2 / 1000).toFixed(2),
+					percent: (stock.f4 * 100) / stock.f18,
+				})) || []
+			)
+		} catch (error) {
+			console.log(error)
+			return []
+		}
 	}
 	async getSzValue(stockCodeList: string[]): Promise<Stock[]> {
 		if (stockCodeList.length === 0) return []
 		const idListStr = stockCodeList.map((code) => `0.${code}`).join(',')
-		const response = await fetch(
-			`https://push2.eastmoney.com/api/qt/ulist.np/get?fields=f1,f14,f2,f12,f5,f18,f4&secids=${idListStr}`,
-			{ method: 'GET' }
-		)
-		const data = await response.json()
-		const stocks = data.data?.diff as StockValue[]
-		return (
-			stocks?.map((stock: StockValue) => ({
-				type: 'sz',
-				name: stock.f14,
-				code: stock.f12,
-				current:
-					stock.f1 === 2
-						? (stock.f2 / 100).toFixed(2)
-						: (stock.f2 / 1000).toFixed(2),
-				percent: (stock.f4 * 100) / stock.f18,
-			})) || []
-		)
+		try {
+			const response = await fetch(
+				`https://push2.eastmoney.com/api/qt/ulist.np/get?fields=f1,f14,f2,f12,f5,f18,f4&secids=${idListStr}`,
+				{ method: 'GET' }
+			)
+			const data = await response.json()
+			const stocks = data.data?.diff as StockValue[]
+			return (
+				stocks?.map((stock: StockValue) => ({
+					type: 'sz',
+					name: stock.f14,
+					code: stock.f12,
+					current:
+						stock.f1 === 2
+							? (stock.f2 / 100).toFixed(2)
+							: (stock.f2 / 1000).toFixed(2),
+					percent: (stock.f4 * 100) / stock.f18,
+				})) || []
+			)
+		} catch (error) {
+			console.log(error)
+			return []
+		}
 	}
 
 	async getStockValue(stockCodeList: string[]): Promise<Stock[]> {
@@ -79,7 +89,7 @@ class HTTPService {
 				})) || []
 			)
 		} catch (error) {
-			console.error(error)
+			console.log(error)
 			return []
 		}
 	}

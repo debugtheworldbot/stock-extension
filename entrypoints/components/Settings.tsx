@@ -116,7 +116,7 @@ export default function Settings() {
 					required
 					type='number'
 					placeholder='A股/港股/场内基金代码'
-					className='w-fit px-2 border rounded'
+					className='w-52 pl-2 border rounded'
 				/>
 				<Button className='flex' variant='outline'>
 					添加
