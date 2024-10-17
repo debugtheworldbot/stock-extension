@@ -2,7 +2,7 @@
 	"name": "stock-quiet - 摸鱼看股票插件",
 	"description": "可以在任何网站底部加入自选股列表查看",
 	"private": true,
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"license": "MIT",
 	"type": "module",
 	"scripts": {
