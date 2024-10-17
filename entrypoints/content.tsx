@@ -11,7 +11,7 @@ export default defineContentScript({
 	async main(ctx) {
 		// 3. Define your UI
 		const ui = await createShadowRootUi(ctx, {
-			name: 'example-ui',
+			name: 'stock-ui',
 			position: 'inline',
 			onMount: (container) => {
 				// Container is a body, and React warns when creating a root on the body, so create a wrapper div
@@ -29,7 +29,8 @@ export default defineContentScript({
 			},
 		})
 
-		// 4. Mount the UI
-		ui.mount()
+		setTimeout(() => {
+			ui.mount()
+		}, 500)
 	},
 })
