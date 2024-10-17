@@ -78,7 +78,11 @@ function App() {
 			<Button
 				variant='ghost'
 				onClick={async () => {
-					const res = await browser.runtime.sendMessage({
+					await storage.setItem<string>(
+						`local:currentHost`,
+						window.location.hostname
+					)
+					await browser.runtime.sendMessage({
 						action: 'openPopup',
 						type: 'add',
 						timestamp: 1,
