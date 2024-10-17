@@ -4,9 +4,10 @@ const applyShortCutListener = (callback: () => void) => {
 			callback()
 		}
 	}
-	document.addEventListener('keydown', listener)
+	const controller = new AbortController()
+	document.addEventListener('keydown', listener, { signal: controller.signal })
 	return () => {
-		document.removeEventListener('keydown', listener)
+		controller.abort()
 	}
 }
 
