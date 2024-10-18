@@ -68,7 +68,7 @@ function App() {
 	return (
 		<footer
 			className={clsx(
-				`transition-all fixed z-[9999] bottom-0 bg-white/80 backdrop-blur flex w-screen pl-6 pb-2 items-center gap-2 overflow-visible flex-wrap`,
+				`transition-all fixed z-[9999] bottom-0 bg-transparent backdrop-blur-3xl flex w-screen pl-6 pb-2 items-center gap-2 overflow-visible flex-wrap`,
 				`text-${fontSize}`
 			)}
 		>
