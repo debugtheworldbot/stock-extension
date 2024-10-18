@@ -44,9 +44,9 @@ export default function Settings() {
 		e.preventDefault()
 		const target = e.target as HTMLFormElement
 		const code = (target.elements[0] as HTMLInputElement).value
-		const hk = (await getHkValue([code]))?.[0]
-		const sh = (await getShValue([code]))?.[0]
-		const sz = (await getSzValue([code]))?.[0]
+		const hk = code.length === 5 ? (await getHkValue([code]))?.[0] : null
+		const sh = code.length === 6 ? (await getShValue([code]))?.[0] : null
+		const sz = code.length === 6 ? (await getSzValue([code]))?.[0] : null
 
 		let type: Market | null = null
 

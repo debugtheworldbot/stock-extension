@@ -14,16 +14,18 @@ class HTTPService {
 			const data = await response.json()
 			const stocks = data.data?.diff as StockValue[]
 			return (
-				stocks?.map((stock: StockValue) => ({
-					type: 'sh',
-					name: stock.f14,
-					code: stock.f12,
-					current:
-						stock.f1 === 2
-							? (stock.f2 / 100).toFixed(2)
-							: (stock.f2 / 1000).toFixed(2),
-					percent: (stock.f4 * 100) / stock.f18,
-				})) || []
+				stocks
+					?.filter((stock) => !!stock)
+					.map((stock) => ({
+						type: 'sh',
+						name: stock.f14,
+						code: stock.f12,
+						current:
+							stock.f1 === 2
+								? (stock.f2 / 100).toFixed(2)
+								: (stock.f2 / 1000).toFixed(2),
+						percent: (stock.f4 * 100) / stock.f18,
+					})) || []
 			)
 		} catch (error) {
 			console.log(error)
@@ -41,16 +43,18 @@ class HTTPService {
 			const data = await response.json()
 			const stocks = data.data?.diff as StockValue[]
 			return (
-				stocks?.map((stock: StockValue) => ({
-					type: 'sz',
-					name: stock.f14,
-					code: stock.f12,
-					current:
-						stock.f1 === 2
-							? (stock.f2 / 100).toFixed(2)
-							: (stock.f2 / 1000).toFixed(2),
-					percent: (stock.f4 * 100) / stock.f18,
-				})) || []
+				stocks
+					?.filter((stock) => !!stock)
+					.map((stock) => ({
+						type: 'sz',
+						name: stock.f14,
+						code: stock.f12,
+						current:
+							stock.f1 === 2
+								? (stock.f2 / 100).toFixed(2)
+								: (stock.f2 / 1000).toFixed(2),
+						percent: (stock.f4 * 100) / stock.f18,
+					})) || []
 			)
 		} catch (error) {
 			console.log(error)
@@ -104,8 +108,9 @@ export default {}
 const convertToStockArray = (rawData: string): Stock[] => {
 	// var hq_str_rt_hk00700 = "TENCENT,腾讯控股,433.800,436.000,433.800,425.200,426.400,-9.600,-2.202,426.400,426.600,3113356037.015,7264318,32.008,0.000,482.400,257.972,2024/10/15,10:41:57,30|3,N|Y|Y,0.000|0.000|0.000,0|||0.000|0.000|0.000, |0,Y";
 	// var hq_str_rt_hk01810 = "XIAOMI-W,小米集团－Ｗ,23.600,23.600,24.050,23.400,23.850,0.250,1.059,23.850,23.900,893724745.700,37607253,31.176,0.000,26.200,11.840,2024/10/15,10:41:57,30|3,N|Y|Y,0.000|0.000|0.000,0|||0.000|0.000|0.000, |0,Y";
+	// var hq_str_rt_hk01819 = "";
 
-	return rawData
+	const res = rawData
 		.trim()
 		.split(';')
 		.filter(Boolean)
@@ -114,9 +119,11 @@ const convertToStockArray = (rawData: string): Stock[] => {
 			const [c, stockInfo] = stockData.split('=')
 			// c= var hq_str_rt_hk01810
 			const code = c.replace('var hq_str_rt_hk', '')
+			if (!stockInfo) return null
 			const [, name, , , , , current, , percent] = stockInfo
 				.replace(/"/g, '')
 				.split(',')
+			if (!name) return null
 			return {
 				code,
 				name,
@@ -125,6 +132,8 @@ const convertToStockArray = (rawData: string): Stock[] => {
 				type: 'hk' as Market,
 			}
 		})
+		.filter((stock) => !!stock)
+	return res
 }
 
 type StockValue = {
@@ -136,7 +145,7 @@ type StockValue = {
 	f14: string // 股票名称
 	f18: number // 开盘价
 	type: Market
-}
+} | null
 
 export type Market = 'sh' | 'sz' | 'hk'
 
