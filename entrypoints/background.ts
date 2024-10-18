@@ -1,9 +1,10 @@
 import { registerHTTPService } from './httpService'
 
 export default defineBackground(() => {
-	browser.runtime.onMessage.addListener((message, sender) => {
-		if (message.action === 'openPopup') {
-			browser.action.openPopup()
+	browser.tabs.onUpdated.addListener((tabId, changeInfo) => {
+		if (changeInfo.status === 'complete') {
+			browser.tabs.sendMessage(tabId, { action: 'onLoadComplete' })
+			console.log('load complete')
 		}
 	})
 	registerHTTPService()
