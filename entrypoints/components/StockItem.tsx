@@ -24,7 +24,7 @@ export const StockItem = ({ stock, type }: { stock: Stock; type: Market }) => {
 						newCodeList.unshift({ type, code: stock.code })
 						setCodeList(newCodeList)
 					}}
-					className='transition-all border p-0.5 rounded hover:bg-green-300'
+					className='transition-all border p-0.5 rounded-full hover:bg-green-300'
 				>
 					<DrawingPinIcon className='w-[1em] h-[1em]' />
 				</button>
@@ -36,7 +36,7 @@ export const StockItem = ({ stock, type }: { stock: Stock; type: Market }) => {
 							)
 						)
 					}}
-					className='transition-all border p-0.5 rounded hover:bg-red-300'
+					className='transition-all border p-0.5 rounded-full hover:bg-red-300'
 				>
 					<TrashIcon className='w-[1em] h-[1em]' />
 				</button>
