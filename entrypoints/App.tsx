@@ -14,12 +14,24 @@ function App() {
 	const [showUrlList, setShowUrlList] = useStorageState(showUrlListStore)
 	const currentHost = window.location.hostname
 	const isShow = showUrlList.includes(currentHost)
+	const [isActiveTab, setIsActiveTab] = useState(true)
+
+	useEffect(() => {
+		document.addEventListener('visibilitychange', function () {
+			if (document.visibilityState === 'visible') {
+				setIsActiveTab(true)
+			} else {
+				setIsActiveTab(false)
+			}
+		})
+	}, [])
 
 	const [codeList] = useStorageState(codeListStore)
 	const [fontSize] = useStorageState(fontSizeStore)
 
 	const fetchStock = useCallback(async () => {
 		if (!isShow) return
+		if (!isActiveTab) return
 		const shCodes = codeList.filter((c) => c.type === 'sh').map((c) => c.code)
 		const szCodes = codeList.filter((c) => c.type === 'sz').map((c) => c.code)
 		const hkCodes = codeList.filter((c) => c.type === 'hk').map((c) => c.code)
@@ -35,7 +47,7 @@ function App() {
 			})
 			.filter(Boolean) as Stock[]
 		setStockList(orderedStocks)
-	}, [codeList, isShow])
+	}, [codeList, isShow, isActiveTab])
 
 	useEffect(() => {
 		fetchStock()

@@ -7,6 +7,11 @@ export default defineBackground(() => {
 			console.log('load complete')
 		}
 	})
+	browser.runtime.onMessage.addListener((message) => {
+		if (message.action === 'openPopup') {
+			browser.action.openPopup()
+		}
+	})
 	registerHTTPService()
 	browser.declarativeNetRequest.updateDynamicRules({
 		removeRuleIds: [1],
